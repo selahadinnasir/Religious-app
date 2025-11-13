@@ -20,11 +20,8 @@ RUN composer install --no-dev --optimize-autoloader
 # Install and build frontend (Vite + Tailwind)
 RUN npm install && npm run build
 
-# Clear cache and run migrations
-RUN php artisan config:clear && php artisan cache:clear && php artisan migrate --force
-
 # Expose port
 EXPOSE 8000
 
-# Run Laravel server
-CMD php artisan serve --host=0.0.0.0 --port=8000
+# Run Laravel server with setup commands before start
+CMD php artisan config:clear && php artisan cache:clear && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000
